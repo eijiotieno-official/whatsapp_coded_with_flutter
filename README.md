@@ -5,3 +5,8 @@
 ## Chat Bubble
 
 <img src="screenshots/Screenshot_1703494873.png" alt="Alt Text" width="300">
+
+## Status
+
+<img src="screenshots/Screenshot_1703681408.png" alt="Alt Text" width="300">
+<img src="screenshots/Screenshot_1703681426.png" alt="Alt Text" width="300">
