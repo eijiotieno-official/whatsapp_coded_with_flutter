@@ -1,33 +1,51 @@
-// Importing the necessary Flutter material and custom widgets
+// Importing the necessary Flutter material and custom widgets, including an emoji picker package
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:whatsapp_coded_with_flutter/chat_input/widgets/back_widget.dart';
 import 'package:whatsapp_coded_with_flutter/chat_input/widgets/emoji_picker_widget.dart';
 import 'package:whatsapp_coded_with_flutter/chat_input/widgets/front_widget.dart';
 import 'package:whatsapp_coded_with_flutter/chat_input/widgets/send_button_widget.dart';
 
-// Creating a StatefulWidget named ChatInputWidget
+// We initiate the creation of a StatefulWidget named ChatInputWidget for handling user input.
 class ChatInputWidget extends StatefulWidget {
   const ChatInputWidget({Key? key}) : super(key: key);
 
-  // Creating the state for ChatInputWidget
+  // Establishing the state for ChatInputWidget
   @override
   State<ChatInputWidget> createState() => _ChatInputWidgetState();
 }
 
-// Creating the state class _ChatInputWidgetState for ChatInputWidget
+// Inside _ChatInputWidgetState, we define the state logic for ChatInputWidget
 class _ChatInputWidgetState extends State<ChatInputWidget> {
   // Creating TextEditingController for text input and ScrollController for scrolling
   final TextEditingController _textEditingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
+  // Variables to manage the state of emoji visibility and handling emoji keyboard interactions
   bool _emojiOpen = false;
-  void toggleEmojis() {
+  Future<void> toggleEmojis() async {
     setState(() {
       _emojiOpen = !_emojiOpen;
     });
+
+    // Logic to handle showing/hiding the system keyboard based on emoji visibility
+    if (_emojiOpen) {
+      await Future.delayed(const Duration(milliseconds: 200)).then(
+        (value) async {
+          await SystemChannels.textInput.invokeMethod('TextInput.hide');
+        },
+      );
+    } else {
+      await Future.delayed(const Duration(milliseconds: 500)).then(
+        (value) async {
+          await SystemChannels.textInput.invokeMethod('TextInput.show');
+        },
+      );
+    }
   }
 
+  // Method to add selected emoji to the text controller
   void addEmojiToTextController({required Emoji emoji}) {
     _textEditingController.text = _textEditingController.text + emoji.emoji;
     _textEditingController.selection = TextSelection.fromPosition(
@@ -45,12 +63,14 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
         bottom: 6,
         right: 6,
       ),
-      // Stack widget to layer components on top of each other
+      // Column widget to organize components vertically
       child: Column(
         children: [
+          // Displaying the EmojiPickerWidget if emoji panel is open
           if (_emojiOpen)
             EmojiPickerWidget(
                 addEmojiToTextController: addEmojiToTextController),
+          // Stack widget to layer components on top of each other
           Stack(
             children: [
               // Main row containing the chat input card and a transparent send button
@@ -71,6 +91,7 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
                           BackWidget(
                             textEditingController: _textEditingController,
                             toggleEmojis: toggleEmojis,
+                            emojiOpen: _emojiOpen,
                           ),
                           // FrontWidget for the front side of the chat input
                           FrontWidget(

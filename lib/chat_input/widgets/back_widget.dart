@@ -7,11 +7,15 @@ class BackWidget extends StatelessWidget {
   // Declaring a final variable 'textEditingController' of type TextEditingController
   final TextEditingController textEditingController;
   final Function toggleEmojis;
+  final bool emojiOpen;
 
   // Constructor to receive the TextEditingController
-  const BackWidget(
-      {Key? key, required this.textEditingController, required this.toggleEmojis})
-      : super(key: key);
+  const BackWidget({
+    Key? key,
+    required this.textEditingController,
+    required this.toggleEmojis,
+    required this.emojiOpen,
+  }) : super(key: key);
 
   // Overriding the build method of StatelessWidget
   @override
@@ -27,7 +31,8 @@ class BackWidget extends StatelessWidget {
               onPressed: () {
                 toggleEmojis();
               },
-              icon: const Icon(Icons.emoji_emotions_outlined),
+              icon: Icon(
+                  emojiOpen ? Icons.keyboard : Icons.emoji_emotions_outlined),
             ),
             // Expanded TextField with transparent text color and no border
             const Expanded(
