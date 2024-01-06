@@ -1,6 +1,7 @@
 // Import necessary packages and files for Flutter
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:whatsapp_coded_with_flutter/status/models/user.dart';
 
 // Define a StatelessWidget named StatusViewAppBar
@@ -64,7 +65,7 @@ class StatusViewAppBar extends StatelessWidget {
   Widget buildReplyWidget() => "current_user_id" != user.id
       ? GestureDetector(
           onTap: () {
-            debugPrint("Reply to Status");
+            Fluttertoast.showToast(msg: "Reply to Status");
           },
           child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -91,7 +92,7 @@ class StatusViewAppBar extends StatelessWidget {
   Widget buildViewersWidget() => "current_user_id" == user.id
       ? GestureDetector(
           onTap: () {
-            debugPrint("Viewers to Status");
+            Fluttertoast.showToast(msg: "Viewers to Status");
           },
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
