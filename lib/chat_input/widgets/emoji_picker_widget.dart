@@ -158,153 +158,156 @@ class _EmojiPickerWidgetState extends State<EmojiPickerWidget>
       padding: const EdgeInsets.only(bottom: 6),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
-        child: Container(
-          color: Theme.of(context).hoverColor,
+        child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.35,
-          child: Column(
-            children: [
-              // TabBar for navigating through emoji categories
-              TabBar(
-                isScrollable: false,
-                labelPadding: const EdgeInsets.symmetric(vertical: 7.5),
-                controller: tabController,
-                indicatorSize: TabBarIndicatorSize.label,
-                dividerColor: Colors.transparent,
-                indicator: MaterialIndicator(
-                  height: 5,
-                  topRightRadius: 5,
-                  bottomRightRadius: 5,
-                  topLeftRadius: 5,
-                  bottomLeftRadius: 5,
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
-                ),
-                // Icons representing different emoji categories
-                tabs: const [
-                  Icon(Icons.watch_later),
-                  Icon(Icons.emoji_emotions),
-                  Icon(Icons.pets),
-                  Icon(Icons.fastfood),
-                  Icon(Icons.sports_soccer),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.lightbulb),
-                  Icon(Icons.emoji_symbols_rounded),
-                  Icon(Icons.flag),
-                ],
-              ),
-              Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 2.5,
-                    right: 2.5,
-                    bottom: 2.5,
+          child: Card(
+            margin: const EdgeInsets.all(0),
+            child: Column(
+              children: [
+                // TabBar for navigating through emoji categories
+                TabBar(
+                  isScrollable: false,
+                  labelPadding: const EdgeInsets.symmetric(vertical: 7.5),
+                  controller: tabController,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  dividerColor: Colors.transparent,
+                  indicator: MaterialIndicator(
+                    height: 5,
+                    topRightRadius: 5,
+                    bottomRightRadius: 5,
+                    topLeftRadius: 5,
+                    bottomLeftRadius: 5,
+                    color:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.7),
                   ),
-                  // TabBarView for displaying emoji grids for each category
-                  child: TabBarView(
-                    controller: tabController,
-                    children: [
-                      // Recent Emojis category
-                      Scaffold(
-                        body: _recentEmojis.isEmpty
-                            ? const Center(
-                                child: Text(
-                                  "No ReCeNt EmOjIs",
-                                ),
-                              )
-                            : GridView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: _recentEmojis.length,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 8,
-                                ),
-                                itemBuilder: (context, index) {
-                                  Emoji emoji = _recentEmojis[index];
-                                  return Center(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        // Adding selected emoji to the text controller
-                                        widget.addEmojiToTextController(
-                                            emoji: emoji);
-                                        // Updating the recently used emojis list
-                                        EmojiPickerUtils()
-                                            .addEmojiToRecentlyUsed(
-                                                key: key, emoji: emoji);
-                                      },
-                                      child: Text(
-                                        emoji.emoji,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 30,
+                  // Icons representing different emoji categories
+                  tabs: const [
+                    Icon(Icons.watch_later),
+                    Icon(Icons.emoji_emotions),
+                    Icon(Icons.pets),
+                    Icon(Icons.fastfood),
+                    Icon(Icons.sports_soccer),
+                    Icon(Icons.directions_car),
+                    Icon(Icons.lightbulb),
+                    Icon(Icons.emoji_symbols_rounded),
+                    Icon(Icons.flag),
+                  ],
+                ),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 2.5,
+                      right: 2.5,
+                      bottom: 2.5,
+                    ),
+                    // TabBarView for displaying emoji grids for each category
+                    child: TabBarView(
+                      controller: tabController,
+                      children: [
+                        // Recent Emojis category
+                        Scaffold(
+                          body: _recentEmojis.isEmpty
+                              ? const Center(
+                                  child: Text(
+                                    "No ReCeNt EmOjIs",
+                                  ),
+                                )
+                              : GridView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: _recentEmojis.length,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 8,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    Emoji emoji = _recentEmojis[index];
+                                    return Center(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          // Adding selected emoji to the text controller
+                                          widget.addEmojiToTextController(
+                                              emoji: emoji);
+                                          // Updating the recently used emojis list
+                                          EmojiPickerUtils()
+                                              .addEmojiToRecentlyUsed(
+                                                  key: key, emoji: emoji);
+                                        },
+                                        child: Text(
+                                          emoji.emoji,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 30,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              ),
-                      ),
-                      // Smileys category
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(7.5),
-                        child: Scaffold(
-                          body: buildEmojis(emojis: _smileysEmojis),
+                                    );
+                                  },
+                                ),
                         ),
-                      ),
-                      // Animals category
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(7.5),
-                        child: Scaffold(
-                          body: buildEmojis(emojis: _animalsEmojis),
+                        // Smileys category
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(7.5),
+                          child: Scaffold(
+                            body: buildEmojis(emojis: _smileysEmojis),
+                          ),
                         ),
-                      ),
-                      // Foods category
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(7.5),
-                        child: Scaffold(
-                          body: buildEmojis(emojis: _foodsEmojis),
+                        // Animals category
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(7.5),
+                          child: Scaffold(
+                            body: buildEmojis(emojis: _animalsEmojis),
+                          ),
                         ),
-                      ),
-                      // Activities category
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(7.5),
-                        child: Scaffold(
-                          body: buildEmojis(emojis: _activitiesEmojis),
+                        // Foods category
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(7.5),
+                          child: Scaffold(
+                            body: buildEmojis(emojis: _foodsEmojis),
+                          ),
                         ),
-                      ),
-                      // Travel category
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(7.5),
-                        child: Scaffold(
-                          body: buildEmojis(emojis: _travelEmojis),
+                        // Activities category
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(7.5),
+                          child: Scaffold(
+                            body: buildEmojis(emojis: _activitiesEmojis),
+                          ),
                         ),
-                      ),
-                      // Symbols category
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(7.5),
-                        child: Scaffold(
-                          body: buildEmojis(emojis: _symbolsEmojis),
+                        // Travel category
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(7.5),
+                          child: Scaffold(
+                            body: buildEmojis(emojis: _travelEmojis),
+                          ),
                         ),
-                      ),
-                      // Objects category
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(7.5),
-                        child: Scaffold(
-                          body: buildEmojis(emojis: _objectsEmojis),
+                        // Symbols category
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(7.5),
+                          child: Scaffold(
+                            body: buildEmojis(emojis: _symbolsEmojis),
+                          ),
                         ),
-                      ),
-                      // Flags category
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(7.5),
-                        child: Scaffold(
-                          body: buildEmojis(emojis: _flagsEmojis),
+                        // Objects category
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(7.5),
+                          child: Scaffold(
+                            body: buildEmojis(emojis: _objectsEmojis),
+                          ),
                         ),
-                      ),
-                    ],
+                        // Flags category
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(7.5),
+                          child: Scaffold(
+                            body: buildEmojis(emojis: _flagsEmojis),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -335,10 +338,7 @@ class _EmojiPickerWidgetState extends State<EmojiPickerWidget>
                 },
                 child: Text(
                   emoji.emoji,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                  ),
+                  style: const TextStyle(fontSize: 30),
                 ),
               ),
             );
